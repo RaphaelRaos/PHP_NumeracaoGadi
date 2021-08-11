@@ -193,5 +193,68 @@ class NumeroReferencia extends Conexao {
         } else {
             return "Saída não realizada, Favor Validar (Error -> 01B)";
         }
-    } 
-}
+    }
+
+
+        public function newListar ($BuscaFinal=null) {
+
+            if ($BuscaFinal == null){
+                $BFetchFull = $this->listarReferencia();
+            } else {                
+
+                $conn = new Conexao();
+                $this->connect = $conn->conectar();
+
+                $ParLike = '%'.$BuscaFinal.'%';
+
+                $BFetch = "SELECT id_referencia, numero_referencia, num_processo_referencia, des_ua, des_uo, assunto, posse_referencia, vigencia_referencia
+                FROM tb_numReferencia
+                WHERE excluido_referencia = 0 AND automatico_saida IS NULL AND numero_referencia LIKE :numero_referencia OR
+                excluido_referencia = 0 AND automatico_saida IS NULL AND num_processo_referencia LIKE :num_processo_referencia OR
+                excluido_referencia = 0 AND automatico_saida IS NULL AND assunto LIKE :assunto OR
+                excluido_referencia = 0 AND automatico_saida IS NULL AND des_ua LIKE :des_ua
+                ORDER BY id_referencia DESC ";
+                
+                $BFetchFull = $this->connect->prepare($BFetch);
+                
+                $BFetchFull->bindParam(':numero_referencia', $ParLike, PDO::PARAM_INT);
+                $BFetchFull->bindParam(':num_processo_referencia', $ParLike, PDO::PARAM_STR);    
+                $BFetchFull->bindParam(':assunto', $ParLike, PDO::PARAM_STR);
+                $BFetchFull->bindParam(':des_ua', $ParLike, PDO::PARAM_STR);
+                $BFetchFull->execute();
+
+                $I = 0;
+                $numReferencia = [];
+                
+                if(($BFetchFull) AND ($BFetchFull->rowCount() !=0)) {
+                while ($Fetch = $BFetchFull->fetch(PDO::FETCH_ASSOC)) {;
+                extract($Fetch);           
+                            
+                    $listaReferencia[$I] = [ 
+                        'registro_referencia' =>$Fetch['id_referencia'] = [
+                            $Fetch['id_referencia'] => $Fetch['id_referencia'] = [
+                                'id_referencia' =>$Fetch['id_referencia'],
+                                'numero_referencia' =>$Fetch['numero_referencia'] ,
+                                'num_processo_referencia' =>$Fetch['num_processo_referencia'],
+                                'des_ua' =>$Fetch['des_ua'],
+                                'des_uo' =>$Fetch['des_uo'],                        
+                                'assunto' =>$Fetch['assunto'],    
+                                'posse_referencia' =>$Fetch['posse_referencia'],
+                                'vigencia_referencia' =>$Fetch['vigencia_referencia']
+                            ]
+                        ]                      
+                                            
+                                                     
+                    ];
+                $I++;
+                }
+                http_response_code(200);
+                echo json_encode($listaReferencia);
+                } 
+            }
+    }
+
+            
+}   
+
+
