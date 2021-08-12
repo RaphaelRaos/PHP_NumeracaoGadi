@@ -48,7 +48,7 @@ class Comunicados extends Conexao
       
         $query_comunicados_list = "SELECT id_comunicado, numero_comunicado, assunto_comunicado, 
         datEmissao_comunicado, executor_comunicado, area_comunicado, 
-        observacao_comunicado FROM tb_comunicados ORDER BY id_comunicado DESC ";
+        observacao_comunicado FROM tb_comunicados WHERE exclusao=0 ORDER BY id_comunicado DESC ";
 
         $result_list_comunicados = $this->connect->prepare($query_comunicados_list);
         $result_list_comunicados->execute();
@@ -131,11 +131,11 @@ class Comunicados extends Conexao
 
         $editComunicado = $this->connect->prepare($query_editComunicado);
         $editComunicado->bindParam(':assunto_comunicado',$dados['assunto_comunicado'], PDO::PARAM_STR);
-        $editComunicado->bindParam(':datEmissao_comunicado',$dados['data_elaboracao']);
+        $editComunicado->bindParam(':datEmissao_comunicado',$dados['datEmissao_comunicado']);
         $editComunicado->bindParam(':executor_comunicado',$dados['executor_comunicado'], PDO::PARAM_STR);
-        $editComunicado->bindParam(':area_comunicado',$dados['setor_comunicado'], PDO::PARAM_STR);
+        $editComunicado->bindParam(':area_comunicado',$dados['area_comunicado'], PDO::PARAM_STR);
         $editComunicado->bindParam(':observacao_comunicado',$dados['observacao_comunicado'], PDO::PARAM_STR);
-        $editComunicado->bindParam(':id', $dados['id'], PDO::PARAM_INT);
+        $editComunicado->bindParam(':id', $dados['id_comunicado'], PDO::PARAM_INT);
 
         $editComunicado->execute();
         
@@ -146,6 +146,26 @@ class Comunicados extends Conexao
            return "Comunicado não Editado, Favor Validar (Error -> 01B)";
         }
 
+    }
+
+    public function excluirComunicado($dados){
+        $conn = new Conexao();
+        $this->connect = $conn->conectar();
+
+        $query_comunicados_list = "UPDATE tb_comunicados
+        SET datExclusao = GETDATE(), exclusao = 1 
+        WHERE id_comunicado= :id";
+
+        $exclusaoComunicado = $this->connect->prepare($query_comunicados_list);
+        $exclusaoComunicado->bindParam(':id', $dados['id_comunicado']);
+
+        $exclusaoComunicado->execute();
+
+        if($exclusaoComunicado->rowCount()){
+            return "Despacho Excluído com Sucesso";
+        } else {
+            return "Despacho não Excluído, Favor Validar (Erro -> 01B)";
+        }
     }
     
 
