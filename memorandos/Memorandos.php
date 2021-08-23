@@ -156,5 +156,60 @@
         }
 
      }
+
+     public function newListarMemorando($BuscaFinal) {
+         if ($BuscaFinal == null) {
+             $BFetchFull = $this->listarMemorandos();
+         } else {
+
+             $conn = new Conexao();
+             $this->connect = $conn->conectar();
+
+             $ParLike = '%'.$BuscaFinal.'%';
+
+             $BFetch = "SELECT id_memorando, numero_memorando, interessado_memorando, assunto_memorando, datEmissao_memorando, executor_memorando,
+             setor_memorando, observacao_memorando FROM tb_memorandos 
+
+             WHERE excluido_memorando = 0 AND numero_memorando LIKE :numero_memorando OR
+             excluido_memorando = 0 AND interessado_memorando LIKE :interessado_memorando OR
+             excluido_memorando = 0 AND assunto_memorando LIKE :assunto_memorando OR
+             excluido_memorando = 0 AND executor_memorando LIKE :executor_memorando OR
+             excluido_memorando = 0 AND setor_memorando LIKE :setor_memorando
+             ORDER BY id_memorando DESC";
+
+
+             $BFetchFull = $this->connect->prepare($BFetch);
+
+             $BFetchFull->bindParam(':numero_memorando', $ParLike, PDO::PARAM_INT);
+             $BFetchFull->bindParam(':interessado_memorando', $ParLike, PDO::PARAM_STR);
+             $BFetchFull->bindParam(':assunto_memorando', $ParLike, PDO::PARAM_STR);
+             $BFetchFull->bindParam(':executor_memorando', $ParLike, PDO::PARAM_STR);
+             $BFetchFull->bindParam(':setor_memorando', $ParLike, PDO::PARAM_STR);
+             $BFetchFull->execute();
+
+             $I = 0;  
+
+             if(($BFetchFull) AND ($BFetchFull->rowCount() !=0)) {
+                while ($Fetch = $BFetchFull->fetch(PDO::FETCH_ASSOC)) {;
+                extract($Fetch);           
+                            
+                    $listaMemorando[$I] = [ 
+
+                        'id_memorando' =>$Fetch['id_memorando'],
+                        'numero_memorando' =>$Fetch['numero_memorando'] ,
+                        'interessado_memorando' =>$Fetch['interessado_memorando'] ,
+                        'assunto_memorando' =>$Fetch['assunto_memorando'],
+                        'datEmissao_memorando' =>$Fetch['datEmissao_memorando'],
+                        'executor_memorando' =>$Fetch['executor_memorando'],
+                        'setor_memorando' =>$Fetch['setor_memorando'],
+                        'observacao_memorando' =>$Fetch['observacao_memorando']                  
+                     ];
+                $I++;
+                }
+                http_response_code(200);
+                echo json_encode($listaMemorando);
+            }
+         }
+     }
 }
 

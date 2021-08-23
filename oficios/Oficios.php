@@ -153,6 +153,62 @@ class Oficios extends Conexao {
             return "Oficio não excluído, Favor Validar (Error -> 01B)";
         } 
     }
+
+    public function newListarOficio($BuscaFinal){
+        if ($BuscaFinal == null){
+            $BFetchFull = $this->listarOficios();
+        } else {
+
+            $conn = new Conexao();
+            $this->connect = $conn->conectar();
+
+            $ParLike = '%'.$BuscaFinal.'%';
+
+            $BFetch = "SELECT id_oficio, numero_oficio, interessado_oficio, assunto_oficio,datEmissao_oficio,
+            executor_oficio,setor_oficio, observacao_oficio 
+            FROM tb_oficios
+
+            WHERE excluido_oficio = 0 AND numero_oficio LIKE :numero_oficio OR
+            excluido_oficio = 0 AND interessado_oficio LIKE :interessado_oficio OR
+            excluido_oficio = 0 AND assunto_oficio LIKE :assunto_oficio OR
+            excluido_oficio = 0 AND executor_oficio LIKE :executor_oficio OR
+            excluido_oficio = 0 AND setor_oficio LIKE :setor_oficio
+            ORDER BY id_oficio DESC "; 
+
+            $BFetchFull = $this->connect->prepare($BFetch);
+                            
+            $BFetchFull->bindParam(':numero_oficio', $ParLike, PDO::PARAM_INT);
+            $BFetchFull->bindParam(':interessado_oficio', $ParLike, PDO::PARAM_STR);    
+            $BFetchFull->bindParam(':assunto_oficio', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->bindParam(':executor_oficio', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->bindParam(':setor_oficio', $ParLike, PDO::PARAM_STR);
+
+            $BFetchFull->execute();
+
+            $I = 0;   
+                
+                if(($BFetchFull) AND ($BFetchFull->rowCount() !=0)) {
+                while ($Fetch = $BFetchFull->fetch(PDO::FETCH_ASSOC)) {;
+                extract($Fetch);           
+                            
+                    $listaOficio[$I] = [ 
+                        
+                        'id_oficio' =>$Fetch['id_oficio'] ,
+                        'numero_oficio' =>$Fetch['numero_oficio'] ,
+                        'interessado_oficio' =>$Fetch['interessado_oficio'] ,
+                        'assunto_oficio' =>$Fetch['assunto_oficio'] ,
+                        'datEmissao_oficio' =>$Fetch['datEmissao_oficio'] ,
+                        'executor_oficio' =>$Fetch['executor_oficio'] ,
+                        'setor_oficio' =>$Fetch['setor_oficio'] ,
+                        'observacao_oficio' =>$Fetch['observacao_oficio']                  
+                     ];
+                $I++;
+                }
+                http_response_code(200);
+                echo json_encode($listaOficio);
+                } 
+        }
+    }
 }
 
 

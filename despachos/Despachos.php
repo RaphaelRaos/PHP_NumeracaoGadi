@@ -185,5 +185,62 @@ class Despachos extends Conexao {
             return "Saída não realizada, Favor Validar (Error -> 01B)";
         }
     } 
+
+    public function newListarDespachos($BuscaFinal) {
+        if($BuscaFinal == null){
+            $BFetchFull = $this->listar();
+
+        } else {
+            $conn = new Conexao();
+            $this->connect = $conn->conectar();
+
+            $ParLike = '%'.$BuscaFinal.'%';
+
+            $BFetch = "SELECT id_despacho, numero_despacho, numero_sisrad_processo, des_ua, des_ugo, interessado_despacho, assunto_despacho,
+            datEntrada_despacho, executor_despacho,setor, observacao_despacho FROM tb_despachos
+            WHERE excluido_despacho = 0 AND datSaida_despacho IS NULL AND numero_despacho LIKE :numero_despacho OR
+            excluido_despacho = 0 AND datSaida_despacho IS NULL AND numero_sisrad_processo LIKE :numero_sisrad_processo OR
+            excluido_despacho = 0 AND datSaida_despacho IS NULL AND des_ua LIKE :des_ua OR
+            excluido_despacho = 0 AND datSaida_despacho IS NULL AND interessado_despacho LIKE :interessado_despacho OR
+            excluido_despacho = 0 AND datSaida_despacho IS NULL AND assunto_despacho LIKE :assunto_despacho OR
+            excluido_despacho = 0 AND datSaida_despacho IS NULL AND executor_despacho LIKE :executor_despacho 
+            ORDER BY id_despacho DESC ";
+
+            $BFetchFull = $this->connect->prepare($BFetch);
+
+            $BFetchFull->bindParam(':numero_despacho', $ParLike, PDO::PARAM_INT);
+            $BFetchFull->bindParam(':numero_sisrad_processo', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->bindParam(':des_ua', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->bindParam(':interessado_despacho', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->bindParam(':assunto_despacho', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->bindParam(':executor_despacho', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->execute();
+
+            $I = 0;
+
+            if(($BFetchFull) AND ($BFetchFull->rowCount() !=0)) {
+                while ($Fetch = $BFetchFull->fetch(PDO::FETCH_ASSOC)) {;
+                extract($Fetch);           
+                            
+                    $listaDespacho[$I] = [
+                    'id_despacho' =>$Fetch['id_despacho'],
+                    'numero_despacho' =>$Fetch['numero_despacho'],
+                    'numero_sisrad_processo' =>$Fetch['numero_sisrad_processo'],
+                    'des_ua' =>$Fetch['des_ua'],
+                    'des_ugo' =>$Fetch['des_ugo'],
+                    'interessado_despacho'=>$Fetch['interessado_despacho'],
+                    'assunto_despacho' =>$Fetch['assunto_despacho'],
+                    'datEntrada_despacho' =>$Fetch['datEntrada_despacho'],
+                    'executor_despacho' =>$Fetch['executor_despacho'],
+                    'setor' =>$Fetch['setor'],
+                    'observacao_despacho' =>$Fetch['observacao_despacho']
+                    ];
+                    $I++;
+                }
+                http_response_code(200);
+                echo json_encode($listaDespacho);
+            }
+        }
+    }
 }
 

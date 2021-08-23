@@ -152,4 +152,61 @@ class Instrucoes extends Conexao {
         }
 
     }
+
+    public function newListarInstrucao($BuscaFinal) {
+        if ($BuscaFinal == null){
+            $BFetchFull = $this->listarInstrucoes();
+        } else {
+
+            $conn = new Conexao();
+            $this->connect = $conn->conectar();            
+
+            $ParLike = '%'.$BuscaFinal.'%';
+
+           $BFetch = "SELECT id_instrucao, numero_instrucao, interessado_instrucao, assunto_instrucao, 
+            datEmissao_instrucao, executor_instrucao, setor, observacao_instrucao FROM tb_instrucoes 
+            WHERE excluido_instrucao = 0  AND numero_instrucao LIKE :numero_instrucao OR
+            excluido_instrucao = 0  AND interessado_instrucao LIKE :interessado_instrucao OR
+            excluido_instrucao = 0  AND assunto_instrucao LIKE :assunto_instrucao OR
+            excluido_instrucao = 0  AND executor_instrucao LIKE :executor_instrucao OR
+            excluido_instrucao = 0  AND setor LIKE :setor
+
+            ORDER BY id_instrucao DESC";
+
+            $BFetchFull = $this->connect->prepare($BFetch);
+            $BFetchFull->bindParam(':numero_instrucao', $ParLike, PDO::PARAM_INT);
+            $BFetchFull->bindParam(':interessado_instrucao', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->bindParam(':assunto_instrucao', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->bindParam(':executor_instrucao', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->bindParam(':setor', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->execute();
+
+            $I = 0;   
+                
+                if(($BFetchFull) AND ($BFetchFull->rowCount() !=0)) {
+                while ($Fetch = $BFetchFull->fetch(PDO::FETCH_ASSOC)) {;
+                extract($Fetch);           
+                            
+                    $listaIntrucao[$I] = [ 
+                        
+                        'id_instrucao' =>$Fetch['id_instrucao'],
+                        'numero_instrucao' =>$Fetch['numero_instrucao'] ,
+                        'interessado_instrucao' =>$Fetch['interessado_instrucao'] ,
+                        'assunto_instrucao' =>$Fetch['assunto_instrucao'] ,
+                        'datEmissao_instrucao' =>$Fetch['datEmissao_instrucao'] ,
+                        'executor_instrucao' =>$Fetch['executor_instrucao'],
+                       'setor' =>$Fetch['setor'] ,
+                        'observacao_instrucao' =>$Fetch['observacao_instrucao']                   
+                     ];
+                $I++;
+                }
+                http_response_code(200);
+                echo json_encode($listaIntrucao);
+                } 
+
+
+
+
+        }
+    }
 }

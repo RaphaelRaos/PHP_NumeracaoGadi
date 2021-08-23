@@ -170,4 +170,67 @@ class RelacaoRemessa extends Conexao {
         }
        
     }
+
+    public function newListarRemessa($BuscaFinal) {
+        if ($BuscaFinal == null){
+            $BFetchFull = $this->listarRemessa();
+
+        } else {
+
+            $conn = new Conexao();
+            $this->connect = $conn->conectar();
+
+            $ParLike = '%'.$BuscaFinal.'%';
+
+            $BFetch = "SELECT id_remessa, numero_remessa, numProcesso_remessa, des_ua ,  des_uo ,interessado_remessa ,assunto_remessa ,datEmissao_remessa ,executor_remessa ,
+            area_remessa ,observacao_remessa 
+            FROM tb_relRemessas 
+            WHERE excluido_remessa = 0 AND numero_remessa LIKE :numero_remessa OR
+            excluido_remessa = 0 AND numProcesso_remessa LIKE :numProcesso_remessa OR
+            excluido_remessa = 0 AND des_ua LIKE :des_ua OR
+            excluido_remessa = 0 AND interessado_remessa LIKE :interessado_remessa OR
+            excluido_remessa = 0 AND assunto_remessa LIKE :assunto_remessa OR
+            excluido_remessa = 0 AND executor_remessa LIKE :executor_remessa OR
+            excluido_remessa = 0 AND area_remessa LIKE :area_remessa
+            ORDER BY id_remessa DESC ";
+
+            $BFetchFull = $this->connect->prepare($BFetch);
+
+            $BFetchFull->bindParam(':numero_remessa', $ParLike, PDO::PARAM_INT);
+            $BFetchFull->bindParam(':numProcesso_remessa', $ParLike, PDO::PARAM_STR);    
+            $BFetchFull->bindParam(':des_ua', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->bindParam(':interessado_remessa', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->bindParam(':assunto_remessa', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->bindParam(':executor_remessa', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->bindParam(':area_remessa', $ParLike, PDO::PARAM_STR);
+
+            $BFetchFull->execute();            
+
+            $I = 0;   
+                
+                if(($BFetchFull) AND ($BFetchFull->rowCount() !=0)) {
+                while ($Fetch = $BFetchFull->fetch(PDO::FETCH_ASSOC)) {;
+                extract($Fetch);           
+                            
+                    $listaRemessa[$I] = [ 
+                        
+                                'id_remessa' =>$Fetch['id_remessa'] ,
+                                'numero_remessa' =>$Fetch['numero_remessa'] ,
+                                'numProcesso_remessa' =>$Fetch['numProcesso_remessa'] ,
+                                'des_ua' =>$Fetch['des_ua'] ,
+                                'des_uo' =>$Fetch['des_uo'] ,
+                                'interessado_remessa' =>$Fetch['interessado_remessa'] ,
+                                'assunto_remessa' =>$Fetch['assunto_remessa'] ,
+                                'datEmissao_remessa' =>$Fetch['datEmissao_remessa'] ,
+                                'executor_remessa' =>$Fetch['executor_remessa'] ,
+                                'area_remessa' =>$Fetch['area_remessa'] ,
+                                'observacao_remessa' =>$Fetch['observacao_remessa']                  
+                     ];
+                $I++;
+                }
+                http_response_code(200);
+                echo json_encode($listaRemessa);
+                } 
+        }
+    }
 }

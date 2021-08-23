@@ -53,7 +53,8 @@ class NumeroReferencia extends Conexao {
         if (($result_listReferencia)AND ($result_listReferencia->rowCount() !=0)){
             while($resutReferencia = $result_listReferencia->fetch(PDO::FETCH_ASSOC)){
                 extract($resutReferencia);
-                $listaReferencia ['registro_referencia'][$id_referencia] = [
+                
+                $listaReferencia [$id_referencia] = [
                     'id_referencia' => $id_referencia,
                     'numero_referencia' => $numero_referencia,
                     'num_processo_referencia' => $num_processo_referencia,
@@ -196,7 +197,7 @@ class NumeroReferencia extends Conexao {
     }
 
 
-        public function newListar ($BuscaFinal=null) {
+        public function newListar($BuscaFinal) {
 
             if ($BuscaFinal == null){
                 $BFetchFull = $this->listarReferencia();
@@ -223,16 +224,14 @@ class NumeroReferencia extends Conexao {
                 $BFetchFull->bindParam(':des_ua', $ParLike, PDO::PARAM_STR);
                 $BFetchFull->execute();
 
-                $I = 0;
-                $numReferencia = [];
+                $I = 0;   
                 
                 if(($BFetchFull) AND ($BFetchFull->rowCount() !=0)) {
                 while ($Fetch = $BFetchFull->fetch(PDO::FETCH_ASSOC)) {;
                 extract($Fetch);           
                             
                     $listaReferencia[$I] = [ 
-                        'registro_referencia' =>$Fetch['id_referencia'] = [
-                            $Fetch['id_referencia'] => $Fetch['id_referencia'] = [
+                        
                                 'id_referencia' =>$Fetch['id_referencia'],
                                 'numero_referencia' =>$Fetch['numero_referencia'] ,
                                 'num_processo_referencia' =>$Fetch['num_processo_referencia'],
@@ -240,12 +239,8 @@ class NumeroReferencia extends Conexao {
                                 'des_uo' =>$Fetch['des_uo'],                        
                                 'assunto' =>$Fetch['assunto'],    
                                 'posse_referencia' =>$Fetch['posse_referencia'],
-                                'vigencia_referencia' =>$Fetch['vigencia_referencia']
-                            ]
-                        ]                      
-                                            
-                                                     
-                    ];
+                                'vigencia_referencia' =>$Fetch['vigencia_referencia']                   
+                     ];
                 $I++;
                 }
                 http_response_code(200);

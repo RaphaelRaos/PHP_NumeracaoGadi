@@ -167,6 +167,56 @@ class Comunicados extends Conexao
             return "Despacho não Excluído, Favor Validar (Erro -> 01B)";
         }
     }
-    
+
+    public function newListarComunuicado ($BuscaFinal = null) {
+
+        if ($BuscaFinal == null){
+            $BFetchFull = $this->listar();
+        } else {
+
+            $conn = new Conexao();
+            $this->connect = $conn -> conectar();
+
+            $ParLike = '%'.$BuscaFinal.'%';
+
+            $BFetch = "SELECT id_comunicado, numero_comunicado, assunto_comunicado, datEmissao_comunicado, executor_comunicado, area_comunicado, 
+            observacao_comunicado FROM tb_comunicados
+            WHERE exclusao=0 AND numero_comunicado LIKE :numero_comunicado OR 
+            exclusao=0 AND assunto_comunicado LIKE :assunto_comunicado OR 
+            exclusao=0 AND executor_comunicado LIKE :executor_comunicado OR 
+            exclusao=0 AND area_comunicado LIKE :area_comunicado 
+            ORDER BY id_comunicado DESC";
+
+            $BFetchFull = $this->connect->prepare($BFetch);
+
+            $BFetchFull->bindParam(':numero_comunicado', $ParLike, PDO::PARAM_INT);
+            $BFetchFull->bindParam(':assunto_comunicado', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->bindParam(':executor_comunicado', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->bindParam(':area_comunicado', $ParLike, PDO::PARAM_STR);
+            $BFetchFull->execute();
+
+            $I = 0;
+
+            if(($BFetchFull) AND ($BFetchFull->rowCount() !=0)) {
+                while ($Fetch = $BFetchFull->fetch(PDO::FETCH_ASSOC)) {;
+                extract($Fetch);           
+                            
+                    $listaComunicado[$I] = [ 
+                        
+                        'id_comunicado' => $id_comunicado,
+                        'numero_comunicado' => $numero_comunicado,
+                        'assunto_comunicado' => $assunto_comunicado,
+                        'datEmissao_comunicado' => $datEmissao_comunicado,
+                        'executor_comunicado' => $executor_comunicado,
+                        'area_comunicado' => $area_comunicado,
+                        'observacao_comunicado' => $observacao_comunicado                  
+                     ];
+                $I++;
+                }
+                http_response_code(200);
+                echo json_encode($listaComunicado);
+                } 
+        }
+    }    
 
 }
