@@ -56,7 +56,7 @@ class Comunicados extends Conexao
         if (($result_list_comunicados) AND ($result_list_comunicados->rowCount() != 0)){
             while ($result_comunicados = $result_list_comunicados->fetch(PDO::FETCH_ASSOC)){
                 extract($result_comunicados);
-                $lista_comunicados["registros_comunicados"][$id_comunicado] = [
+                $lista_comunicados[$id_comunicado] = [
                     'id_comunicado' => $id_comunicado,
                     'numero_comunicado' => $numero_comunicado,
                     'assunto_comunicado' => $assunto_comunicado,

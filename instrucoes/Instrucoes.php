@@ -49,7 +49,7 @@ class Instrucoes extends Conexao {
         if (($result_listInstrucao)AND ($result_listInstrucao->rowCount() !=0)){
             while ($resultInstrucao = $result_listInstrucao->fetch(PDO::FETCH_ASSOC)){
                 extract ($resultInstrucao);
-                $lista_instrucao ['registro_instrucao'][$id_instrucao] =[
+                $lista_instrucao[$id_instrucao] =[
                     'id_instrucao' => $id_instrucao,
                     'numero_instrucao' => $numero_instrucao,
                     'interessado_instrucao' => $interessado_instrucao,

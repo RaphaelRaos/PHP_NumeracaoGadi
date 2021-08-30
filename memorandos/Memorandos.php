@@ -50,7 +50,7 @@
         if (($result_listMemorando)AND ($result_listMemorando->rowCount() !=0)){
             while ($resultMemorando = $result_listMemorando->fetch(PDO::FETCH_ASSOC)){
                 extract ($resultMemorando);
-                    $lista_memorando ['registro_memorando'][$id_memorando] =[
+                    $lista_memorando[$id_memorando] =[
                     'id_memorando' => $id_memorando,
                     'numero_memorando' => $numero_memorando,
                     'interessado_memorando' => $interessado_memorando,

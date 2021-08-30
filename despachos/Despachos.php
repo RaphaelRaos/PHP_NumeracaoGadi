@@ -53,7 +53,7 @@ class Despachos extends Conexao {
         if (($result_list_despachos) AND ($result_list_despachos->rowCount() !=0)){
             while ($result_despachos = $result_list_despachos->fetch(PDO::FETCH_ASSOC)){
                 extract ($result_despachos);
-                $lista_despachos['registros_despachos'][$id_despacho] = [
+                $lista_despachos[$id_despacho] = [
                     'id_despacho' => $id_despacho,
                     'numero_despacho' => $numero_despacho,
                     'numero_sisrad_processo' => $numero_sisrad_processo,

@@ -52,7 +52,7 @@ class Oficios extends Conexao {
         if (($result_listOficios) AND ($result_listOficios->rowCount() != 0)) {
             while ($resultOficio = $result_listOficios->fetch(PDO::FETCH_ASSOC)){
                 extract($resultOficio);
-                $listaOficio['registro_oficio'][$id_oficio] = [
+                $listaOficio[$id_oficio] = [
                     'id_oficio' => $id_oficio,
                     'numero_oficio' => $numero_oficio,
                     'interessado_oficio' => $interessado_oficio,

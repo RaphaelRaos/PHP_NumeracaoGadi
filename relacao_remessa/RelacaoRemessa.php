@@ -60,7 +60,7 @@ class RelacaoRemessa extends Conexao {
             while ($resultRemessa = $result_listRemessa->fetch(PDO::FETCH_ASSOC)){
                 extract ($resultRemessa);
 
-                $listaRemessa ['registro_remessa'][$id_remessa] = [
+                $listaRemessa [$id_remessa] = [
                   'id_remessa' => $id_remessa,
                   'numero_remessa' => $numero_remessa,
                   'numProcesso_remessa' => $numProcesso_remessa,
