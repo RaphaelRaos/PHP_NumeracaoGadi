@@ -20,13 +20,13 @@ class Comunicados extends Conexao
         area_comunicado, observacao_comunicado, exclusao)
         VALUES
         (:assunto_comunicado, :datEmissao_comunicado, GETDATE(), :executor_comunicado,
-        :area_comunicado, :observacao_comunicado, 0) ";
+        :setor_comunicado, :observacao_comunicado, 0) ";
 
         $cad_comunicados = $this->connect->prepare($query_cadcomunicados);
         $cad_comunicados->bindParam(':assunto_comunicado',$dados['comunicado']['assunto_comunicado'], PDO::PARAM_STR);
         $cad_comunicados->bindParam(':datEmissao_comunicado',$dados['comunicado']['data_elaboracao']);
         $cad_comunicados->bindParam(':executor_comunicado',$dados['comunicado']['executor_comunicado'], PDO::PARAM_STR);
-        $cad_comunicados->bindParam(':area_comunicado',$dados['comunicado']['setor_comunicado'], PDO::PARAM_STR);
+        $cad_comunicados->bindParam(':setor_comunicado',$dados['comunicado']['setor_comunicado'], PDO::PARAM_STR);
         $cad_comunicados->bindParam(':observacao_comunicado',$dados['comunicado']['observacao_comunicado'], PDO::PARAM_STR);
 
         $cad_comunicados->execute();
