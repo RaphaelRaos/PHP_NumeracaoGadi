@@ -10,7 +10,7 @@
     require './Unidades.php';
 
         $Uo = new Unidades();
-        $Uo->visualizarUO();
+        $Uo->visualizarUnidades();
 
         $response_json = file_get_contents("php://input");
         $dados = json_decode($response_json,true);

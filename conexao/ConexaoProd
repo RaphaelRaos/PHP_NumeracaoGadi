@@ -1,0 +1,28 @@
+<?php
+
+class Conexao
+{
+    public static function conectar() {
+
+        $pdoConfig  = DB_DRIVER . ":". "Server=" . DB_HOST . ";";
+        $pdoConfig .= "Database=".DB_NAME.";";
+
+        try {
+            if(!isset($connection)){
+                $connection =  new PDO($pdoConfig, DB_USER, DB_PASSWORD);
+                $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            }
+            return $connection;
+         } catch (PDOException $e) {
+            $mensagem = "Drivers disponiveis: " . implode(",", PDO::getAvailableDrivers());
+            $mensagem .= "\nErro: " . $e->getMessage();
+            throw new Exception($mensagem);
+         }
+     }
+}
+define('DB_HOST'        , "172.17.0.4");
+define('DB_USER'        , "CRHADM");
+define('DB_PASSWORD'    , "@xC'$'Gozy6k");
+define('DB_NAME'        , "CRH");
+define('DB_DRIVER'      , "sqlsrv");
+?>

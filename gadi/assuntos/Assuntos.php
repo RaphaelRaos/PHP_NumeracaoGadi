@@ -1,6 +1,6 @@
 <?php
 
-include_once '../conexao/Conexao.php';
+include_once '../../conexao/Conexao.php';
 
 class Assuntos extends Conexao {
 
@@ -12,7 +12,7 @@ class Assuntos extends Conexao {
 
         $this->connect = $conn->conectar();
 
-        $query_list_assunto = "SELECT id_assunto, assunto FROM tb_assuntos";
+        $query_list_assunto = "SELECT id_assunto, assunto FROM numeracaoGadiAssuntos";
         $result_list_assunto = $this->connect->prepare($query_list_assunto);
         $result_list_assunto->execute();
 

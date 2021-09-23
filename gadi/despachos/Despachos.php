@@ -11,25 +11,24 @@ class Despachos extends Conexao {
         $conn = new Conexao();
         $this->connect = $conn->conectar();
 
-        $query_cadDespachos = "INSERT INTO tb_despachos (
-        numero_sisrad_processo, des_ua, des_ugo, interessado_despacho, assunto_despacho,
-        datEntrada_despacho, automatico_entrada, executor_despacho, setor,
-        observacao_despacho, excluido_despacho)
+        $query_cadDespachos = "INSERT INTO numeracaoGadiDespachos (
+        numero_sisrad_processo, interessado_despacho, assunto_despacho, datEmissao_despacho, automaticoCriacao_despacho, anoCriacao_despacho, executor_despacho,  referencia_banquinho,
+        setorElaboracao_despacho, observacao_despacho, excluido_despacho, codtabua)
         VALUES
-        (:numero_sisrad_processo, :des_ua, :des_ugo, :interessado_despacho, :assunto_despacho,
-        :datEntrada_despacho, GETDATE(), :executor_despacho, :setor,
-         :observacao_despacho, 0)";
+        (:numero_sisrad_processo, :interessado_despacho, :assunto_despacho, :datEmissao_despacho, GETDATE(), YEAR(GETDATE()), :executor_despacho, :referencia_banquinho, 
+        :setorElaboracao_despacho, :observacao_despacho, 0, :codtabua)";
 
          $cad_despachos = $this->connect->prepare($query_cadDespachos);
          $cad_despachos->bindParam(':numero_sisrad_processo', $dados['despacho']['numero_sisrad_processo'], PDO::PARAM_STR);
-         $cad_despachos->bindParam(':des_ua', $dados['despacho']['des_ua'], PDO::PARAM_STR);
-         $cad_despachos->bindParam(':des_ugo', $dados['despacho']['des_ugo'], PDO::PARAM_STR);
          $cad_despachos->bindParam(':interessado_despacho', $dados['despacho']['interessado_despacho'], PDO::PARAM_STR);
          $cad_despachos->bindParam(':assunto_despacho', $dados['despacho']['assunto_despacho'], PDO::PARAM_STR);
-         $cad_despachos->bindParam(':datEntrada_despacho', $dados['despacho']['datEntrada_despacho']);
+         $cad_despachos->bindParam(':datEmissao_despacho', $dados['despacho']['datEmissao_despacho']);
          $cad_despachos->bindParam(':executor_despacho', $dados['despacho']['executor_despacho']);
-         $cad_despachos->bindParam(':setor', $dados['despacho']['setor'], PDO::PARAM_STR);
+         $cad_despachos->bindParam(':referencia_banquinho', $dados['despacho']['referencia_banquinho']);
+         $cad_despachos->bindParam(':setorElaboracao_despacho', $dados['despacho']['setorElaboracao_despacho'], PDO::PARAM_STR);
          $cad_despachos->bindParam(':observacao_despacho', $dados['despacho']['observacao_despacho'], PDO::PARAM_STR);
+         $cad_despachos->bindParam(':codtabua', $dados['despacho']['codtabua'], PDO::PARAM_INT);
+
          
          $cad_despachos->execute();
 
@@ -44,8 +43,8 @@ class Despachos extends Conexao {
         $conn = new Conexao();
         $this->connect = $conn->conectar();
 
-        $query_despacho_list = "SELECT id_despacho, numero_despacho, numero_sisrad_processo, des_ua, des_ugo, interessado_despacho, assunto_despacho,
-        datEntrada_despacho, executor_despacho,setor, observacao_despacho FROM tb_despachos WHERE excluido_despacho = 0 AND datSaida_despacho IS NULL  ORDER BY id_despacho DESC "; 
+        $query_despacho_list = "SELECT id_despacho, numero_despacho, numero_sisrad_processo, interessado_despacho, assunto_despacho,
+        datEmissao_despacho, executor_despacho,setorElaboracao_despacho, observacao_despacho FROM numeracaoGadiDespachos WHERE excluido_despacho = 0 AND datSaida_despacho IS NULL  ORDER BY id_despacho DESC "; 
         
         $result_list_despachos = $this->connect->prepare($query_despacho_list);
         $result_list_despachos->execute();
@@ -57,13 +56,11 @@ class Despachos extends Conexao {
                     'id_despacho' => $id_despacho,
                     'numero_despacho' => $numero_despacho,
                     'numero_sisrad_processo' => $numero_sisrad_processo,
-                    'des_ua' => $des_ua,
-                    'des_ugo' => $des_ugo,
                     'interessado_despacho'=> $interessado_despacho,
                     'assunto_despacho' => $assunto_despacho,
-                    'datEntrada_despacho' => $datEntrada_despacho,
+                    'datEmissao_despacho' => $datEmissao_despacho,
                     'executor_despacho' => $executor_despacho,
-                    'setor' => $setor,
+                    'setorElaboracao_despacho' => $setorElaboracao_despacho,
                     'observacao_despacho' => $observacao_despacho
                 ];
             }
@@ -77,8 +74,8 @@ class Despachos extends Conexao {
         $conn = new Conexao();
         $this->connect = $conn->conectar();
 
-        $query_despacho_list = "SELECT id_despacho, numero_despacho, numero_sisrad_processo, des_ua, des_ugo, interessado_despacho, assunto_despacho,
-        datEntrada_despacho, datSaida_despacho, executor_despacho,setor, observacao_despacho FROM tb_despachos WHERE excluido_despacho = 0 AND datSaida_despacho IS NULL AND id_despacho = :id" ;
+        $query_despacho_list = "SELECT id_despacho, numero_despacho, numero_sisrad_processo, interessado_despacho, assunto_despacho,
+        datEmissao_despacho, datSaida_despacho, executor_despacho,setorElaboracao_despacho, observacao_despacho FROM numeracaoGadiDespachos WHERE excluido_despacho = 0 AND datSaida_despacho IS NULL AND id_despacho = :id" ;
 
         $result_despacho = $this->connect->prepare($query_despacho_list);
         $result_despacho->bindParam(':id', $id, PDO::PARAM_INT);
@@ -92,13 +89,11 @@ class Despachos extends Conexao {
                     'id_despacho' => $id_despacho,
                     'numero_despacho' => $numero_despacho,
                     'numero_sisrad_processo' => $numero_sisrad_processo,
-                    'des_ua' => $des_ua,
-                    'des_ugo' => $des_ugo,
                     'interessado_despacho'=> $interessado_despacho,
                     'assunto_despacho' => $assunto_despacho,
-                    'datEntrada_despacho' => $datEntrada_despacho,
+                    'datEmissao_despacho' => $datEmissao_despacho,
                     'executor_despacho' => $executor_despacho,
-                    'setor' => $setor,
+                    'setorElaboracao_despacho' => $setorElaboracao_despacho,
                     'observacao_despacho' => $observacao_despacho
             ];
             $response = [
@@ -120,10 +115,10 @@ class Despachos extends Conexao {
         $conn = new Conexao();
         $this->connect = $conn->conectar();
 
-        $query_despacho_list = "UPDATE tb_despachos
-        SET numero_sisrad_processo = :numero_sisrad_processo, des_ua = :des_ua, des_ugo = :des_ugo,
+        $query_despacho_list = "UPDATE numeracaoGadiDespachos
+        SET numero_sisrad_processo = :numero_sisrad_processo, des_ua = : :des_ugo,
         interessado_despacho = :interessado_despacho, assunto_despacho = :assunto_despacho , executor_despacho = :executor_despacho,
-        setor = :setor, observacao_despacho = :observacao_despacho WHERE id_despacho = :id AND excluido_despacho = 0"; 
+        setorElaboracao_despacho = :setorElaboracao_despacho, observacao_despacho = :observacao_despacho WHERE id_despacho = :id AND excluido_despacho = 0"; 
 
         $editDespacho = $this->connect->prepare($query_despacho_list);
         $editDespacho->bindParam(':numero_sisrad_processo',$dados['numero_sisrad_processo'], PDO::PARAM_STR);
@@ -132,7 +127,7 @@ class Despachos extends Conexao {
         $editDespacho->bindParam(':interessado_despacho',$dados['interessado_despacho'], PDO::PARAM_STR);
         $editDespacho->bindParam(':assunto_despacho',$dados['assunto_despacho'], PDO::PARAM_STR);
         $editDespacho->bindParam(':executor_despacho',$dados['executor_despacho'], PDO::PARAM_STR);
-        $editDespacho->bindParam(':setor',$dados['setor'], PDO::PARAM_STR);
+        $editDespacho->bindParam(':setorElaboracao_despacho',$dados['setorElaboracao_despacho'], PDO::PARAM_STR);
         $editDespacho->bindParam(':observacao_despacho',$dados['observacao_despacho'], PDO::PARAM_STR);
         $editDespacho->bindParam(':id',$dados['id_despacho']);
 
@@ -150,7 +145,7 @@ class Despachos extends Conexao {
         $conn = new Conexao();
         $this->connect = $conn->conectar();
 
-        $query_despacho_list = "UPDATE tb_despachos 
+        $query_despacho_list = "UPDATE numeracaoGadiDespachos 
         SET excluido_despacho = 1, automatico_exclusao = GETDATE() WHERE id_despacho = :id"; 
 
         $exclusaoDespacho = $this->connect->prepare($query_despacho_list);
@@ -170,7 +165,7 @@ class Despachos extends Conexao {
         $conn = new Conexao();
         $this->connect = $conn->conectar();
 
-        $query_despacho_list = "UPDATE tb_despachos 
+        $query_despacho_list = "UPDATE numeracaoGadiDespachos 
         SET datSaida_despacho =  :datSaida_despacho, automatico_saida = GETDATE() WHERE id_despacho = :id"; 
 
         $saidaDespacho = $this->connect->prepare($query_despacho_list);
@@ -196,8 +191,8 @@ class Despachos extends Conexao {
 
             $ParLike = '%'.$BuscaFinal.'%';
 
-            $BFetch = "SELECT id_despacho, numero_despacho, numero_sisrad_processo, des_ua, des_ugo, interessado_despacho, assunto_despacho,
-            datEntrada_despacho, executor_despacho,setor, observacao_despacho FROM tb_despachos
+            $BFetch = "SELECT id_despacho, numero_despacho, numero_sisrad_processo, interessado_despacho, assunto_despacho,
+            datEmissao_despacho, executor_despacho,setorElaboracao_despacho, observacao_despacho FROM numeracaoGadiDespachos
             WHERE excluido_despacho = 0 AND datSaida_despacho IS NULL AND numero_despacho LIKE :numero_despacho OR
             excluido_despacho = 0 AND datSaida_despacho IS NULL AND numero_sisrad_processo LIKE :numero_sisrad_processo OR
             excluido_despacho = 0 AND datSaida_despacho IS NULL AND des_ua LIKE :des_ua OR
@@ -230,9 +225,9 @@ class Despachos extends Conexao {
                     'des_ugo' =>$Fetch['des_ugo'],
                     'interessado_despacho'=>$Fetch['interessado_despacho'],
                     'assunto_despacho' =>$Fetch['assunto_despacho'],
-                    'datEntrada_despacho' =>$Fetch['datEntrada_despacho'],
+                    'datEmissao_despacho' =>$Fetch['datEmissao_despacho'],
                     'executor_despacho' =>$Fetch['executor_despacho'],
-                    'setor' =>$Fetch['setor'],
+                    'setorElaboracao_despacho' =>$Fetch['setorElaboracao_despacho'],
                     'observacao_despacho' =>$Fetch['observacao_despacho']
                     ];
                     $I++;
