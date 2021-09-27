@@ -15,7 +15,7 @@
     if($dados) {
 
         $cadDespacho = new Despachos();
-        $cadDespacho->cadastrar($dados);
+        $cadDespacho->cadastrar($dados);        
        
         $response = [
             "erro" => false,
