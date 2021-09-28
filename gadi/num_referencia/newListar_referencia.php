@@ -24,4 +24,4 @@
     }
 
     $listar = new NumeroReferencia();
-    $listar->newListar($BuscaFinal);
+    $listar->newListarReferencia($BuscaFinal);
