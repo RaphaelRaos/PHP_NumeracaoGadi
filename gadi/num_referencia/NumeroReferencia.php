@@ -25,7 +25,7 @@ class NumeroReferencia extends Conexao
         $cadReferencia->bindParam(':num_processo_referencia', $dados['referencia']['num_processo_referencia'], PDO::PARAM_STR);
         $cadReferencia->bindParam(':codtabua', $dados['referencia']['codtabua'], PDO::PARAM_INT);
         $cadReferencia->bindParam(':interessado_referencia', $dados['referencia']['interessado_referencia'], PDO::PARAM_STR);
-        $cadReferencia->bindParam(':id_assunto', $dados['referencia']['id_assunto'], PDO::PARAM_INT);
+        $cadReferencia->bindParam(':id_assunto', $dados['referencia']['cod_assunto'], PDO::PARAM_INT);
         $cadReferencia->bindParam(':datEmissao_referencia', $dados['referencia']['datEmissao_referencia']);
         $cadReferencia->bindParam(':executor_referencia', $dados['referencia']['executor_referencia'], PDO::PARAM_STR);
         $cadReferencia->bindParam(':setorElaboracao_referencia', $dados['referencia']['setorElaboracao_referencia'], PDO::PARAM_INT);
@@ -81,6 +81,7 @@ class NumeroReferencia extends Conexao
                     'executor_referencia' => $executor_referencia,
                     'area_numReferencia' => $area_numReferencia,
                     'statusProcesso' => $statusProcesso,
+                    'desua' => $desua,
                     'vigencia_referencia' => $vigencia_referencia,
                     'observacao_referencia' => $observacao_referencia,
                     'referencia_banquinho' => $referencia_banquinho
@@ -97,7 +98,8 @@ class NumeroReferencia extends Conexao
         $this->connect = $conn->conectar();
 
         $query_referencia_list = "SELECT id_referencia, numero_referencia, num_processo_referencia, interessado_referencia,numeracaoGadiAssuntos.assunto as assuntoReferencia,
-        datEmissao_referencia, executor_referencia, numeracaoSetor.nome_setor as area_numReferencia, numeracaoGadiAndamentoProcessos.status_andamento AS statusProcesso, 
+        datEmissao_referencia, executor_referencia,
+        numeracaoSetor.id_setor as codArea_referencia, numeracaoSetor.nome_setor as area_numReferencia, numeracaoGadiAndamentoProcessos.status_andamento AS statusProcesso, 
         vigencia_referencia, observacao_referencia, excluido_referencia, referencia_banquinho, [Tabela UA].[Cod UA] AS codua,[Tabela UA].[Des UA] AS desua, [Tabela UGO].[Cod UGO] AS coduo,
         [Tabela UGO].[Des UGO] AS desuo      
         FROM numeracaoGadiNumReferencia
@@ -128,11 +130,14 @@ class NumeroReferencia extends Conexao
                 'assuntoReferencia'=>$assuntoReferencia,
                 'datEmissao_referencia' => $datEmissao_referencia,
                 'executor_referencia' => $executor_referencia,
+                'codArea_referencia' => $codArea_referencia,
                 'area_numReferencia' => $area_numReferencia,
                 'statusProcesso' => $statusProcesso,
                 'vigencia_referencia' => $vigencia_referencia,
                 'observacao_referencia' => $observacao_referencia,
-                'referencia_banquinho' => $referencia_banquinho
+                'referencia_banquinho' => $referencia_banquinho,
+                'desua' => $desua,
+                'desuo' => $desuo
             ];
             $response = [
                 "erro" => false,
@@ -291,6 +296,7 @@ class NumeroReferencia extends Conexao
                         'executor_referencia' => $Fetch['executor_referencia'],
                         'area_numReferencia' => $Fetch['area_numReferencia'],
                         'statusProcesso' => $Fetch['statusProcesso'],
+                        'desua' => $Fetch['desua'],
                         'vigencia_referencia' => $Fetch['vigencia_referencia'],
                         'observacao_referencia' => $Fetch['observacao_referencia'],
                         'referencia_banquinho' => $Fetch['referencia_banquinho']

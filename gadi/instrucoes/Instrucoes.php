@@ -81,7 +81,8 @@ class Instrucoes extends Conexao
         $conn = new Conexao();
         $this->connect = $conn->conectar();
 
-        $query_instrucao_list = "SELECT id_instrucao, numero_instrucao, interessado_instrucao,assunto_instrucao, datEmissao_instrucao, executor_instrucao, numeracaoSetor.nome_setor as  setor,
+        $query_instrucao_list = "SELECT id_instrucao, numero_instrucao, interessado_instrucao,assunto_instrucao, datEmissao_instrucao, executor_instrucao, 
+        numeracaoSetor.id_setor as codSetor_instrucao, numeracaoSetor.nome_setor as  setor,
         observacao_instrucao, referencia_banquinho 
         FROM numeracaoGadiInstrucoes 
         INNER JOIN numeracaoSetor on numeracaoSetor.id_setor = numeracaoGadiInstrucoes.setorElaboracao_instrucao
@@ -102,6 +103,7 @@ class Instrucoes extends Conexao
                 'assunto_instrucao' => $assunto_instrucao,
                 'datEmissao_instrucao' => $datEmissao_instrucao,
                 'executor_instrucao' => $executor_instrucao,
+                'codSetor_instrucao' => $codSetor_instrucao,
                 'setor' => $setor,
                 'observacao_instrucao' => $observacao_instrucao,
                 'referencia_banquinho' => $referencia_banquinho
@@ -127,14 +129,13 @@ class Instrucoes extends Conexao
         $this->connect = $conn->conectar();
 
         $query_instrucao_list = "UPDATE numeracaoGadiInstrucoes
-        SET interessado_instrucao = :interessado_instrucao , assunto_instrucao = :assunto_instrucao, datEmissao_instrucao = :datEmissao_instrucao, executor_instrucao = :executor_instrucao, 
+        SET interessado_instrucao = :interessado_instrucao , assunto_instrucao = :assunto_instrucao, executor_instrucao = :executor_instrucao, 
         setorElaboracao_instrucao = :setorElaboracao_instrucao, observacao_instrucao = :observacao_instrucao, referencia_banquinho = :referencia_banquinho 
         WHERE id_instrucao = :id ";
 
         $editInstrucao = $this->connect->prepare($query_instrucao_list);
         $editInstrucao->bindParam(':interessado_instrucao', $dados['interessado_instrucao'], PDO::PARAM_STR);
         $editInstrucao->bindParam(':assunto_instrucao', $dados['assunto_instrucao'], PDO::PARAM_STR);
-        $editInstrucao->bindParam(':datEmissao_instrucao', $dados['datEmissao_instrucao'],);
         $editInstrucao->bindParam(':executor_instrucao', $dados['executor_instrucao'], PDO::PARAM_STR);
         $editInstrucao->bindParam(':setorElaboracao_instrucao', $dados['setorElaboracao_instrucao'], PDO::PARAM_INT);
         $editInstrucao->bindParam(':observacao_instrucao', $dados['observacao_instrucao'], PDO::PARAM_STR);

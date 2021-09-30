@@ -62,6 +62,7 @@
                     'datEmissao_memorando' => $datEmissao_memorando,
                     'executor_memorando' => $executor_memorando,
                     'setor' => $setor,
+                    'referencia_banquinho'=> $referencia_banquinho,
                     'observacao_memorando' => $observacao_memorando
                 ];
             }
@@ -77,7 +78,7 @@
         $this->connect = $conn->conectar();
 
         $query_memorando_list = "SELECT id_memorando, numero_memorando, interessado_memorando, assunto_memorando, datEmissao_memorando, executor_memorando,
-        numeracaoSetor.nome_setor as  setor, observacao_memorando, referencia_banquinho 
+        numeracaoSetor.id_setor as codSetor_memorando, numeracaoSetor.nome_setor as  setor, observacao_memorando, referencia_banquinho 
         FROM numeracaoGadiMemorandos
         INNER JOIN numeracaoSetor on numeracaoSetor.id_setor = numeracaoGadiMemorandos.setorElaboracao_memorando
         WHERE excluido_memorando = 0 AND id_memorando = :id";
@@ -98,7 +99,9 @@
                 'assunto_memorando' => $assunto_memorando,
                 'datEmissao_memorando' => $datEmissao_memorando,
                 'executor_memorando' => $executor_memorando,
+                'codSetor_memorando' => $codSetor_memorando,
                 'setor' => $setor,
+                'referencia_banquinho' => $referencia_banquinho,
                 'observacao_memorando' => $observacao_memorando
             ];
             $response = [

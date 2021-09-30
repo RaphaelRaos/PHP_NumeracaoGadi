@@ -89,7 +89,7 @@ class Comunicados extends Conexao
 
         $query_vis_comunicado = "SELECT 
         id_comunicado, numero_comunicado, interessado_comunicado, assunto_comunicado, datEmissao_comunicado, executor_comunicado, observacao_comunicado, referencia_banquinho, numeracaoSetor.nome_setor as  area_comunicado,
-        numeracaoSetor.id_setor as  cod_comunicado           
+        numeracaoSetor.id_setor as  cod_areaComunicado           
         FROM numeracaoGadiComunicados 
             INNER JOIN  numeracaoSetor on numeracaoSetor.id_setor = numeracaoGadiComunicados.setorElaboracao_comunicado
             WHERE exclusao=0 and id_comunicado = :id";
@@ -110,7 +110,7 @@ class Comunicados extends Conexao
                 'datEmissao_comunicado' => $datEmissao_comunicado,
                 'executor_comunicado' => $executor_comunicado,
                 'referencia_banquinho' => $referencia_banquinho,
-                'cod_area_comunicado' => $cod_comunicado,                
+                'cod_areaComunicado' => $cod_areaComunicado,                
                 'area_comunicado' => $area_comunicado,                
                 'observacao_comunicado' => $observacao_comunicado
             ];

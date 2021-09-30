@@ -47,7 +47,7 @@ class Despachos extends Conexao
         $this->connect = $conn->conectar();
 
         $query_despacho_list = "SELECT id_despacho, numero_despacho,  numero_sisrad_processo, interessado_despacho, assunto_despacho,
-        datEmissao_despacho, automaticoCriacao_despacho, anoCriacao_despacho, executor_despacho,  referencia_banquinho, numeracaoSetor.nome_setor as area_comunicado,
+        datEmissao_despacho, automaticoCriacao_despacho, anoCriacao_despacho, executor_despacho,  referencia_banquinho, numeracaoSetor.nome_setor as area_despacho,
         observacao_despacho, excluido_despacho, [Tabela UA].[Cod UA] AS codua,[Tabela UA].[Des UA] AS desua,
 		[Tabela UGO].[Cod UGO] AS coduo, [Tabela UGO].[Des UGO] AS desuo
 		FROM numeracaoGadiDespachos
@@ -72,8 +72,9 @@ class Despachos extends Conexao
                     'assunto_despacho' => $assunto_despacho,
                     'datEmissao_despacho' => $datEmissao_despacho,
                     'executor_despacho' => $executor_despacho,
-                    'area_comunicado' => $area_comunicado,
+                    'area_despacho' => $area_despacho,
                     'observacao_despacho' => $observacao_despacho,
+                    'referencia_banquinho'=>$referencia_banquinho,
                     'codua' => $codua,
                     'desua' => $desua,
                     'coduo' => $coduo,
@@ -92,9 +93,10 @@ class Despachos extends Conexao
         $this->connect = $conn->conectar();
 
         $query_despacho_list = "SELECT id_despacho, numero_despacho,  numero_sisrad_processo, interessado_despacho, assunto_despacho,
-        datEmissao_despacho, automaticoCriacao_despacho, anoCriacao_despacho, executor_despacho,  referencia_banquinho, numeracaoSetor.nome_setor as area_comunicado,
+        datEmissao_despacho, automaticoCriacao_despacho, anoCriacao_despacho, executor_despacho,  referencia_banquinho, 
+        numeracaoSetor.id_setor as codArea_despacho ,numeracaoSetor.nome_setor as area_despacho,
         observacao_despacho, excluido_despacho, 
-        [Tabela UA].[Cod UA] AS codua,[Tabela UA].[Des UA] AS desua, [Tabela UGO].[Cod UGO] AS coduo, [Tabela UGO].[Des UGO] AS desuo
+        [Tabela UA].CodTabUa as codtabua, [Tabela UA].[Cod UA] AS codua,[Tabela UA].[Des UA] AS desua, [Tabela UGO].[Cod UGO] AS coduo, [Tabela UGO].[Des UGO] AS desuo
 		FROM numeracaoGadiDespachos
 		INNER JOIN [Tabela UA] ON [Tabela UA].CodTabUa = numeracaoGadiDespachos.codtabua
 		INNER JOIN [TABELA UGE] ON [Tabela UGE].CodTabUGE = [Tabela UA].CodTabUGE
@@ -118,8 +120,11 @@ class Despachos extends Conexao
                 'assunto_despacho' => $assunto_despacho,
                 'datEmissao_despacho' => $datEmissao_despacho,
                 'executor_despacho' => $executor_despacho,
-                'area_comunicado' => $area_comunicado,
+                'codArea_despacho' => $codArea_despacho,
+                'area_despacho' => $area_despacho,
                 'observacao_despacho' => $observacao_despacho,
+                'referencia_banquinho'=>$referencia_banquinho,
+                'codtabua' => $codtabua,
                 'codua' => $codua,
                 'desua' => $desua,
                 'coduo' => $coduo,
