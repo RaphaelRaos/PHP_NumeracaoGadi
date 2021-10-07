@@ -81,7 +81,7 @@ class Oficios extends Conexao
 
         $query_oficio_list = "SELECT
             id_oficio, numero_oficio, interessado_oficio, assunto_oficio, datEmissao_oficio, automaticoCriacao_oficio, anoCriacao_oficio, executor_oficio, 
-        numeracaoSetor.nome_setor as area_oficio, observacao_oficio, referencia_banquinho 
+        numeracaoSetor.nome_setor as area_oficio, numeracaoSetor.id_setor AS codSetor_oficio, observacao_oficio, referencia_banquinho 
         FROM numeracaoGadiOficios
         INNER JOIN  numeracaoSetor on numeracaoSetor.id_setor = numeracaoGadiOficios.setorElaboracao_oficio 
         WHERE excluido_oficio = 0 AND id_oficio = :id";
@@ -101,6 +101,7 @@ class Oficios extends Conexao
                     'assunto_oficio' => $assunto_oficio,
                     'datEmissao_oficio' => $datEmissao_oficio,
                     'executor_oficio' => $executor_oficio,
+                    'codSetor_oficio' => $codSetor_oficio,
                     'area_oficio' => $area_oficio,
                     'observacao_oficio' => $observacao_oficio,
                     'referencia_banquinho' => $referencia_banquinho
@@ -179,7 +180,7 @@ class Oficios extends Conexao
             $ParLike = '%' . $BuscaFinal . '%';
 
             $BFetch = "SELECT id_oficio, numero_oficio, interessado_oficio, assunto_oficio, datEmissao_oficio, executor_oficio, 
-            numeracaoSetor.nome_setor as area_oficio, observacao_oficio, referencia_banquinho 
+            numeracaoSetor.nome_setor as area_oficio,numeracaoSetor.id_setor AS codSetor_oficio,  observacao_oficio, referencia_banquinho 
             FROM numeracaoGadiOficios
             INNER JOIN  numeracaoSetor on numeracaoSetor.id_setor = numeracaoGadiOficios.setorElaboracao_oficio 
             WHERE excluido_oficio = 0 AND numero_oficio LIKE :numero_oficio OR

@@ -94,7 +94,9 @@ class RelacaoRemessa extends Conexao {
         $this->connect = $conn->conectar();
 
         $query_listRemessa = "SELECT
-        id_remessa, numero_remessa, numProcesso_remessa, interessado_remessa ,assunto_remessa ,datEmissao_remessa ,executor_remessa, numeracaoSetor.nome_setor as area_remessa,
+        id_remessa, numero_remessa, numProcesso_remessa, interessado_remessa ,assunto_remessa ,datEmissao_remessa ,executor_remessa, 
+        numeracaoGadiRemessas.codtabua AS codtabua,
+        numeracaoSetor.id_setor as codSetor_remessa, numeracaoSetor.nome_setor as area_remessa,
         observacao_remessa, referencia_banquinho,[Tabela UA].[Cod UA] AS codua,[Tabela UA].[Des UA] AS desua, [Tabela UGO].[Cod UGO] AS coduo, [Tabela UGO].[Des UGO] AS desuo 
         
         FROM numeracaoGadiRemessas
@@ -120,9 +122,11 @@ class RelacaoRemessa extends Conexao {
                     'assunto_remessa' => $assunto_remessa,
                     'datEmissao_remessa' => $datEmissao_remessa,
                     'executor_remessa' => $executor_remessa,
+                    'codSetor_remessa' => $codSetor_remessa,
                     'area_remessa' => $area_remessa,
                     'observacao_remessa' => $observacao_remessa,
                     'referencia_banquinho' => $referencia_banquinho,
+                    'codtabua' => $codtabua,
                     'codua' => $codua,
                     'desua' => $desua
                 ];

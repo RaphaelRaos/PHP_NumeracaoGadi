@@ -97,10 +97,12 @@ class NumeroReferencia extends Conexao
         $conn = new Conexao();
         $this->connect = $conn->conectar();
 
-        $query_referencia_list = "SELECT id_referencia, numero_referencia, num_processo_referencia, interessado_referencia,numeracaoGadiAssuntos.assunto as assuntoReferencia,
-        datEmissao_referencia, executor_referencia,
-        numeracaoSetor.id_setor as codArea_referencia, numeracaoSetor.nome_setor as area_numReferencia, numeracaoGadiAndamentoProcessos.status_andamento AS statusProcesso, 
-        vigencia_referencia, observacao_referencia, excluido_referencia, referencia_banquinho, [Tabela UA].[Cod UA] AS codua,[Tabela UA].[Des UA] AS desua, [Tabela UGO].[Cod UGO] AS coduo,
+        $query_referencia_list = "SELECT id_referencia, numero_referencia, num_processo_referencia, interessado_referencia,
+        numeracaoGadiAssuntos.id_assunto as id_assunto,numeracaoGadiAssuntos.assunto as assuntoReferencia,
+        datEmissao_referencia, executor_referencia, numeracaoSetor.id_setor as codArea_referencia, numeracaoSetor.nome_setor as area_numReferencia, 
+        numeracaoGadiAndamentoProcessos.id_andamento as idStatusProcesso, numeracaoGadiAndamentoProcessos.status_andamento AS statusProcesso, 
+        vigencia_referencia, observacao_referencia, excluido_referencia, referencia_banquinho, motivoDevolucao_referencia,
+        [Tabela UA].CodTabUa AS CodTabUa, [Tabela UA].[Cod UA] AS codua,[Tabela UA].[Des UA] AS desua, [Tabela UGO].[Cod UGO] AS coduo,
         [Tabela UGO].[Des UGO] AS desuo      
         FROM numeracaoGadiNumReferencia
 
@@ -127,15 +129,19 @@ class NumeroReferencia extends Conexao
                 'numero_referencia' => $numero_referencia,
                 'num_processo_referencia' => $num_processo_referencia,
                 'interessado_referencia' =>$interessado_referencia,
+                'id_assunto' => $id_assunto,
                 'assuntoReferencia'=>$assuntoReferencia,
                 'datEmissao_referencia' => $datEmissao_referencia,
                 'executor_referencia' => $executor_referencia,
                 'codArea_referencia' => $codArea_referencia,
                 'area_numReferencia' => $area_numReferencia,
+                'idStatusProcesso' => $idStatusProcesso,
                 'statusProcesso' => $statusProcesso,
                 'vigencia_referencia' => $vigencia_referencia,
                 'observacao_referencia' => $observacao_referencia,
                 'referencia_banquinho' => $referencia_banquinho,
+                'motivoDevolucao_referencia' => $motivoDevolucao_referencia,
+                'CodTabUa' => $CodTabUa,
                 'desua' => $desua,
                 'desuo' => $desuo
             ];
