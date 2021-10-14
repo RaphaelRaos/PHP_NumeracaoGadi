@@ -11,24 +11,22 @@ require './ComunicadosGabCrh.php';
 
 
 $response_json = file_get_contents("php://input");
-
 $dados = json_decode($response_json, true);
+$cadComunicado;
 
 if ($dados) {
-        
+
     $cadComunicado = new ComunicadosGabCrh();
-    $cadComunicado->cadastrarComunicados($dados);     
-   
+    $cadComunicado->cadastrarComunicados($dados);
+
+    
 } else {
-$response = [
-    "erro" => true,
-    "mensagem" => "Comunicado não cadastrado!"  
-];
+
+    $response = [
+        "erro" => true,
+        "mensagem" => "Comunicado não cadasTRado!"
+    ];
+    echo json_encode($response);
 }
 
 http_response_code(200);
-echo json_encode($response);
-
-
-
-
