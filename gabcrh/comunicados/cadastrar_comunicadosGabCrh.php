@@ -18,7 +18,11 @@ if ($dados) {
 
     $cadComunicado = new ComunicadosGabCrh();
     $cadComunicado->cadastrarComunicados($dados);
-
+   
+    $response = [
+        "erro" => false,
+        "mensagem" => "Comunicado cadastrado!"  
+    ];
     
 } else {
 

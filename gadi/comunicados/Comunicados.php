@@ -172,13 +172,7 @@ class Comunicados extends Conexao
         $exclusaoComunicado = $this->connect->prepare($query_comunicados_list);
         $exclusaoComunicado->bindParam(':id', $dados['id_comunicado']);
 
-        $exclusaoComunicado->execute();
-
-        if ($exclusaoComunicado->rowCount()) {
-            return "Despacho Excluído com Sucesso";
-        } else {
-            return "Despacho não Excluído, Favor Validar (Erro -> 01B)";
-        }
+        $exclusaoComunicado->execute();       
     }
 
     public function newListarComunuicado($BuscaFinal = null)
@@ -215,7 +209,7 @@ class Comunicados extends Conexao
             $I = 0;
 
             if (($BFetchFull) and ($BFetchFull->rowCount() != 0)) {
-                while ($Fetch = $BFetchFull->fetch(PDO::FETCH_ASSOC)) {;
+                while ($Fetch = $BFetchFull->fetch(PDO::FETCH_ASSOC)) {
                     extract($Fetch);
 
                     $listaComunicado[$I] = [
