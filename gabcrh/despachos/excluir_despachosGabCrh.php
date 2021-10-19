@@ -6,7 +6,7 @@
     header("Access-Control-Allow-Methods:GET,PUT,POST, DELETE");
     header("Access-Control-Allow-Headers: *");
 
-    require './ComunicadosGabCrh.php';
+    require './DespachosGabCrh.php';
     
 
     $response_json = file_get_contents("php://input");
@@ -14,17 +14,17 @@
 
     if($dados) {
 
-        $excluirComunicado = new ComunicadosGabCrh();
-        $excluirComunicado->excluirComunicados($dados);
+        $excluirDespacho = new DespachosGabCrh();
+        $excluirDespacho->excluirDespachos($dados);
        
         $response = [
             "erro" => false,
-            "mensagem" => "Comunicado Excluído!"
+            "mensagem" => "Despacho Excluído!"
         ];
     } else {
         $response = [
             "erro" => true,
-            "mensagem" => "Comunicado não excluído! (Erro 2-B)"
+            "mensagem" => "Despacho não excluído! (Erro 2-B)"
         ];
     }
     http_response_code(200);

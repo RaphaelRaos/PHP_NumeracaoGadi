@@ -7,18 +7,18 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods:GET,PUT,POST, DELETE");
 header("Access-Control-Allow-Headers: *");
 
-require './ComunicadosGabCrh.php';
+require './DespachosGabCrh.php';
 
 
 $response_json = file_get_contents("php://input");
 $dados = json_decode($response_json, true);
-$cadComunicado;
+$cadDespachos;
 
 if ($dados) {
 
-    $cadComunicado = new ComunicadosGabCrh();
-    $cadComunicado->cadastrarComunicados($dados);
-   
+    $cadDespachos = new DespachosGabCrh();
+    $cadDespachos->cadastrarDespachos($dados);   
+      
 } else {
 
     $response = [

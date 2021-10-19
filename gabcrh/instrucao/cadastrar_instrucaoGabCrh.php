@@ -7,23 +7,23 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods:GET,PUT,POST, DELETE");
 header("Access-Control-Allow-Headers: *");
 
-require './ComunicadosGabCrh.php';
+require './InstrucaoGabCrh.php';
 
 
 $response_json = file_get_contents("php://input");
 $dados = json_decode($response_json, true);
-$cadComunicado;
+$cadInstrucao;
 
 if ($dados) {
 
-    $cadComunicado = new ComunicadosGabCrh();
-    $cadComunicado->cadastrarComunicados($dados);
+    $cadInstrucao = new InstrucaoGabCrh();
+    $cadInstrucao->cadastrarInstrucao($dados);
    
 } else {
 
     $response = [
         "erro" => true,
-        "mensagem" => "Comunicado não cadasTRado!"
+        "mensagem" => "Instruçao não cadasTRada!"
     ];
     echo json_encode($response);
 }
