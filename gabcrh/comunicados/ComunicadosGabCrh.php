@@ -116,7 +116,7 @@ class ComunicadosGabCrh extends Conexao
                 'numero_comunicado' => $numero_comunicado,
                 'assunto_comunicado' => $assunto_comunicado,
                 'assuntoComunicado' => $assuntoComunicado,
-                'datEmissao_comunicado' => $datEmissao_comunicado,
+                'datEmissAo_comunicado' => date('d/m/Y',strtotime($datEmissao_comunicado)),
                 'executor_comunicado' => $executor_comunicado,
                 'setorElaboracao_comunicado' => $setorElaboracao_comunicado,
                 'setorComunicado' => $setorComunicado,
