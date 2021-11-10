@@ -77,10 +77,10 @@ class OficioGabCrh extends Conexao
                     'numero_oficio' => $numero_oficio,
                     'assunto_oficio' => $assunto_oficio,
                     'assuntooficio' => $assuntooficio,
-                    'datElaboracao_oficio' => $datElaboracao_oficio,
+                    'datElaboracao_oficio' => date('d/m/Y', strtotime($datElaboracao_oficio)),
                     'executor_oficio' => $executor_oficio,
                     'setorElaboracao_oficio' => $setorElaboracao_oficio,
-                    'setoroficio' => $setoroficio,
+                    'setorOficio' => $setoroficio,
                     'observacao_oficio' => $observacao_oficio
                 ];
             }
@@ -116,10 +116,10 @@ class OficioGabCrh extends Conexao
                 'numero_oficio' => $numero_oficio,
                 'assunto_oficio' => $assunto_oficio,
                 'assuntooficio' => $assuntooficio,
-                'datElaboracao_oficio' => $datElaboracao_oficio,
+                'datElaboracao_oficio' => date('d/m/Y', strtotime($datElaboracao_oficio)),
                 'executor_oficio' => $executor_oficio,
                 'setorElaboracao_oficio' => $setorElaboracao_oficio,
-                'setoroficio' => $setoroficio,
+                'setorOficio' => $setoroficio,
                 'observacao_oficio' => $observacao_oficio
             ];
 
@@ -155,7 +155,6 @@ class OficioGabCrh extends Conexao
         $editoficio->bindParam(':id_oficio', $dados['id_oficio'], PDO::PARAM_INT);
 
         $editoficio->execute();
-        
     }
 
     public function newListarOficio($BuscaFinal)
@@ -197,10 +196,10 @@ class OficioGabCrh extends Conexao
                         'numero_oficio' => $numero_oficio,
                         'assunto_oficio' => $assunto_oficio,
                         'assuntooficio' => $assuntooficio,
-                        'datElaboracao_oficio' => $datElaboracao_oficio,
+                        'datElaboracao_oficio' => date('d/m/Y', strtotime($datElaboracao_oficio)),
                         'executor_oficio' => $executor_oficio,
                         'setorElaboracao_oficio' => $setorElaboracao_oficio,
-                        'setoroficio' => $setoroficio,
+                        'setorOficio' => $setoroficio,
                         'observacao_oficio' => $observacao_oficio
                     ];
                 }

@@ -114,10 +114,10 @@ class InstrucaoGabCrh extends Conexao
                 'id_instrucao' => $id_instrucao,
                 'numero_instrucao' => $numero_instrucao,
                 'assunto_instrucao' => $assunto_instrucao,
-                'Elaboracao_instrucao' => $datElaboracao_instrucao,
+                'datElaboracao_instrucao' => date('d/m/Y',strtotime($datElaboracao_instrucao)),
                 'executor_instrucao' => $executor_instrucao,
                 'setorElaboracao_instrucao' => $setorElaboracao_instrucao,
-                'setorinstrucao' => $setorinstrucao,
+                'setor_instrucao' => $setorinstrucao,
                 'observacao_instrucao' => $observacao_instrucao
             ];
 
@@ -191,7 +191,7 @@ class InstrucaoGabCrh extends Conexao
                         'id_instrucao' => $id_instrucao,
                         'numero_instrucao' => $numero_instrucao,
                         'assunto_instrucao' => $assunto_instrucao,
-                        'datElaboracao_instrucao' => $datElaboracao_instrucao,
+                        'datElaboracao_instrucao' => date('d/m/Y',strtotime($datElaboracao_instrucao)),
                         'executor_instrucao' => $executor_instrucao,
                         'setorElaboracao_instrucao' => $setorElaboracao_instrucao,
                         'setorinstrucao' => $setorinstrucao,

@@ -77,7 +77,7 @@ class InformacaoGabCrh extends Conexao
                     'numero_informacao' => $numero_informacao,
                     'assunto_informacao' => $assunto_informacao,
                     'assuntoInformacao' => $assuntoInformacao,
-                    'datElaboracao_informacao' => $datElaboracao_informacao,
+                    'datElaboracao_informacao' => date('d/m/Y',strtotime($datElaboracao_informacao)),
                     'executor_informacao' => $executor_informacao,
                     'setorElaboracao_informacao' => $setorElaboracao_informacao,
                     'setorInformacao' => $setorInformacao,
@@ -116,7 +116,7 @@ class InformacaoGabCrh extends Conexao
                 'numero_informacao' => $numero_informacao,
                 'assunto_informacao' => $assunto_informacao,
                 'assuntoInformacao' => $assuntoInformacao,
-                'datElaboracao_informacao' => $datElaboracao_informacao,
+                'datElaboracao_informacao' => date('d/m/Y',strtotime($datElaboracao_informacao)),
                 'executor_informacao' => $executor_informacao,
                 'setorElaboracao_informacao' => $setorElaboracao_informacao,
                 'setorInformacao' => $setorInformacao,
@@ -125,7 +125,7 @@ class InformacaoGabCrh extends Conexao
 
             $response = [
                 "erro" => false,
-                "Informacao" => $informacao
+                "informacao" => $informacao
             ];
         } else {
             $response = [

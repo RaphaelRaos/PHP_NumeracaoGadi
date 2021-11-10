@@ -116,7 +116,7 @@ class DespachosGabCrh extends Conexao
                 'numero_despacho' => $numero_despacho,
                 'assunto_despacho' => $assunto_despacho,
                 'assuntodespacho' => $assuntodespacho,
-                'datElaboracao_despacho' => $datElaboracao_despacho,
+                'datElaboracao_despacho' => date('d/m/Y',strtotime($datElaboracao_despacho)),
                 'executor_despacho' => $executor_despacho,
                 'setorElaboracao_despacho' => $setorElaboracao_despacho,
                 'setordespacho' => $setordespacho,

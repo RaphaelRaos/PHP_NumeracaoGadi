@@ -39,14 +39,14 @@ class RemessaGabCrh extends Conexao
         if (($retornoCadastro) and ($retornoCadastro->rowCount() != 0)) {
             $row_remessa =  $retornoCadastro->fetch(PDO::FETCH_ASSOC);
             extract($row_remessa);
-            $remessas = [
+            $remessa = [
                 "erro" => false,
-                "mensagem" => "remessas cadastrada!",
+                "mensagem" => "remessa cadastrada!",
                 'id_remessa' => $id_remessa,
                 'numero_remessa' => $numero_remessa
             ];
             http_response_code(200);
-            echo json_encode($remessas);
+            echo json_encode($remessa);
         }
     }
 
@@ -58,7 +58,7 @@ class RemessaGabCrh extends Conexao
 
         $query_remessa_list = "SELECT 
         id_remessa, numero_remessa, datElaboracao_remessa, assunto_remessa, executor_remessa, setorElaboracao_remessa, exclusao_remessa, observacao_remessa,
-        numeracaoGabCoordenadorCrhAssuntos.assunto as assuntoremessas, numeracaoDepartamento.nome_departamento as setorremessas
+        numeracaoGabCoordenadorCrhAssuntos.assunto as assuntoremessa, numeracaoDepartamento.nome_departamento as setorremessa
         FROM numeracaoGabCoordenadorCrhRemessas
         INNER JOIN numeracaoGabCoordenadorCrhAssuntos ON numeracaoGabCoordenadorCrhRemessas.assunto_remessa = numeracaoGabCoordenadorCrhAssuntos.id_assunto
         INNER JOIN numeracaoDepartamento on numeracaoGabCoordenadorCrhRemessas.setorElaboracao_remessa = numeracaoDepartamento.id_deparatamento
@@ -76,11 +76,11 @@ class RemessaGabCrh extends Conexao
                     'id_remessa' => $id_remessa,
                     'numero_remessa' => $numero_remessa,
                     'assunto_remessa' => $assunto_remessa,
-                    'assuntoremessas' => $assuntoremessas,
-                    'datElaboracao_remessa' => $datElaboracao_remessa,
+                    'assuntoremessa' => $assuntoremessa,
+                    'datElaboracao_remessa' => date('d/m/Y', strtotime($datElaboracao_remessa)),
                     'executor_remessa' => $executor_remessa,
                     'setorElaboracao_remessa' => $setorElaboracao_remessa,
-                    'setorremessas' => $setorremessas,
+                    'setorremessa' => $setorremessa,
                     'observacao_remessa' => $observacao_remessa
                 ];
             }
@@ -98,7 +98,7 @@ class RemessaGabCrh extends Conexao
 
         $query_visualizar_remessa = "SELECT
         id_remessa, numero_remessa, datElaboracao_remessa, assunto_remessa, executor_remessa, setorElaboracao_remessa, observacao_remessa,
-        numeracaoGabCoordenadorCrhAssuntos.assunto as assuntoremessas, numeracaoDepartamento.nome_departamento as setorremessas
+        numeracaoGabCoordenadorCrhAssuntos.assunto as assuntoremessa, numeracaoDepartamento.nome_departamento as setorremessa
         FROM numeracaoGabCoordenadorCrhRemessas
         INNER JOIN numeracaoGabCoordenadorCrhAssuntos ON numeracaoGabCoordenadorCrhRemessas.assunto_remessa = numeracaoGabCoordenadorCrhAssuntos.id_assunto
         INNER JOIN numeracaoDepartamento on numeracaoGabCoordenadorCrhRemessas.setorElaboracao_remessa = numeracaoDepartamento.id_deparatamento
@@ -111,26 +111,26 @@ class RemessaGabCrh extends Conexao
         if (($result_remessa) and ($result_remessa->rowCount() != 0)) {
             $row_remessa = $result_remessa->fetch(PDO::FETCH_ASSOC);
             extract($row_remessa);
-            $remessas = [
+            $remessa = [
                 'id_remessa' => $id_remessa,
                 'numero_remessa' => $numero_remessa,
                 'assunto_remessa' => $assunto_remessa,
-                'assuntoremessas' => $assuntoremessas,
-                'datElaboracao_remessa' => $datElaboracao_remessa,
+                'assuntoremessa' => $assuntoremessa,
+                'datElaboracao_remessa' => date('d/m/Y', strtotime($datElaboracao_remessa)),
                 'executor_remessa' => $executor_remessa,
                 'setorElaboracao_remessa' => $setorElaboracao_remessa,
-                'setorremessas' => $setorremessas,
+                'setorremessa' => $setorremessa,
                 'observacao_remessa' => $observacao_remessa
             ];
 
             $response = [
                 "erro" => false,
-                "remessas" => $remessas
+                "remessa" => $remessa
             ];
         } else {
             $response = [
                 "erro" => true,
-                "mensagem" => "remessas não encontrada!"
+                "mensagem" => "remessa não encontrada!"
             ];
         }
         http_response_code(200);
@@ -142,19 +142,19 @@ class RemessaGabCrh extends Conexao
         $conn = new Conexao();
         $this->connect = $conn->conectar();
 
-        $query_editarremessas = "UPDATE numeracaoGabCoordenadorCrhRemessas
+        $query_editarremessa = "UPDATE numeracaoGabCoordenadorCrhRemessas
         SET assunto_remessa = :assunto_remessa , executor_remessa = :executor_remessa, setorElaboracao_remessa = :setorElaboracao_remessa, 
         observacao_remessa = :observacao_remessa 
         WHERE id_remessa = :id_remessa ";
 
-        $editremessas = $this->connect->prepare($query_editarremessas);
-        $editremessas->bindParam(':assunto_remessa', $dados['assunto_remessa'], PDO::PARAM_INT);
-        $editremessas->bindParam(':executor_remessa', $dados['executor_remessa'], PDO::PARAM_STR);
-        $editremessas->bindParam(':setorElaboracao_remessa', $dados['setorElaboracao_remessa'], PDO::PARAM_INT);
-        $editremessas->bindParam(':observacao_remessa', $dados['observacao_remessa'], PDO::PARAM_STR);
-        $editremessas->bindParam(':id_remessa', $dados['id_remessa'], PDO::PARAM_INT);
+        $editremessa = $this->connect->prepare($query_editarremessa);
+        $editremessa->bindParam(':assunto_remessa', $dados['assunto_remessa'], PDO::PARAM_INT);
+        $editremessa->bindParam(':executor_remessa', $dados['executor_remessa'], PDO::PARAM_STR);
+        $editremessa->bindParam(':setorElaboracao_remessa', $dados['setorElaboracao_remessa'], PDO::PARAM_INT);
+        $editremessa->bindParam(':observacao_remessa', $dados['observacao_remessa'], PDO::PARAM_STR);
+        $editremessa->bindParam(':id_remessa', $dados['id_remessa'], PDO::PARAM_INT);
 
-        $editremessas->execute();
+        $editremessa->execute();
         
     }
 
@@ -170,23 +170,23 @@ class RemessaGabCrh extends Conexao
             $ParLike = '%' . $BuscaFinal . '%';
             $newListar = "SELECT
             id_remessa, numero_remessa, datElaboracao_remessa, assunto_remessa, executor_remessa, setorElaboracao_remessa, observacao_remessa,
-            numeracaoGabCoordenadorCrhAssuntos.assunto as assuntoremessas, numeracaoDepartamento.nome_departamento as setorremessas
+            numeracaoGabCoordenadorCrhAssuntos.assunto as assuntoremessa, numeracaoDepartamento.nome_departamento as setorremessa
             FROM numeracaoGabCoordenadorCrhRemessas
             INNER JOIN numeracaoGabCoordenadorCrhAssuntos ON numeracaoGabCoordenadorCrhRemessas.assunto_remessa = numeracaoGabCoordenadorCrhAssuntos.id_assunto
             INNER JOIN numeracaoDepartamento on numeracaoGabCoordenadorCrhRemessas.setorElaboracao_remessa = numeracaoDepartamento.id_deparatamento
             WHERE exclusao_remessa = 0  and numero_remessa like :numero_remessa OR
             exclusao_remessa = 0  and executor_remessa like :executor_remessa OR
             exclusao_remessa = 0  and assunto_remessa like :assunto_remessa OR  
-            exclusao_remessa = 0  and  numeracaoGabCoordenadorCrhAssuntos.assunto LIKE :assuntoremessas OR
-            exclusao_remessa = 0  and numeracaoDepartamento.nome_departamento LIKE :setorremessas
+            exclusao_remessa = 0  and  numeracaoGabCoordenadorCrhAssuntos.assunto LIKE :assuntoremessa OR
+            exclusao_remessa = 0  and numeracaoDepartamento.nome_departamento LIKE :setorremessa
             ORDER BY id_remessa DESC";
 
             $listar_remessa = $this->connect->prepare($newListar);
             $listar_remessa->bindParam(':numero_remessa', $ParLike, PDO::PARAM_INT);
             $listar_remessa->bindParam(':executor_remessa', $ParLike, PDO::PARAM_STR);
             $listar_remessa->bindParam(':assunto_remessa', $ParLike, PDO::PARAM_INT);
-            $listar_remessa->bindParam(':assuntoremessas', $ParLike, PDO::PARAM_STR);
-            $listar_remessa->bindParam(':setorremessas', $ParLike, PDO::PARAM_STR);
+            $listar_remessa->bindParam(':assuntoremessa', $ParLike, PDO::PARAM_STR);
+            $listar_remessa->bindParam(':setorremessa', $ParLike, PDO::PARAM_STR);
             $listar_remessa->execute();
 
             if (($listar_remessa) and ($listar_remessa->rowCount() != 0)) {
@@ -196,11 +196,11 @@ class RemessaGabCrh extends Conexao
                         'id_remessa' => $id_remessa,
                         'numero_remessa' => $numero_remessa,
                         'assunto_remessa' => $assunto_remessa,
-                        'assuntoremessas' => $assuntoremessas,
-                        'datElaboracao_remessa' => $datElaboracao_remessa,
+                        'assuntoremessa' => $assuntoremessa,
+                        'datElaboracao_remessa' => date('d/m/Y', strtotime($datElaboracao_remessa)),
                         'executor_remessa' => $executor_remessa,
                         'setorElaboracao_remessa' => $setorElaboracao_remessa,
-                        'setorremessas' => $setorremessas,
+                        'setorremessa' => $setorremessa,
                         'observacao_remessa' => $observacao_remessa
                     ];
                 }
@@ -219,8 +219,8 @@ class RemessaGabCrh extends Conexao
         SET automaticoExclusao_remessa = GETDATE(), exclusao_remessa = 1 
         WHERE id_remessa= :id";
 
-        $exclusaoremessas = $this->connect->prepare($query_remessa_list);
-        $exclusaoremessas->bindParam(':id', $dados['id_remessa']);
-        $exclusaoremessas->execute();
+        $exclusaoremessa = $this->connect->prepare($query_remessa_list);
+        $exclusaoremessa->bindParam(':id', $dados['id_remessa']);
+        $exclusaoremessa->execute();
     }
 }
