@@ -20,9 +20,5 @@ class Conexao
          }
      }
 }
-define('DB_HOST'        , "172.18.15.14");
-define('DB_USER'        , "CRHADM");
-define('DB_PASSWORD'    , "adm2006");
-define('DB_NAME'        , "CRH_OLD");
-define('DB_DRIVER'      , "sqlsrv");
+
 ?>
